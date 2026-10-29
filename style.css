@@ -1,0 +1,1488 @@
+/* =====================================================================
+   KAIROS OBSERVATORY - COMPLETE STYLE GUIDE
+
+   This CSS file controls ALL visual aspects of the website.
+   Each section is clearly labeled so you can easily find and edit what you need.
+
+   HOW TO USE:
+   - Find the section you want to edit using the ★ markers
+   - Change values (colors, sizes, spacing, etc.)
+   - Save and refresh your browser to see changes
+   ===================================================================== */
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 1: COLORS & FONTS
+   ★ Controls the overall color scheme and typography
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+:root {
+  /* Background colors */
+  --night: #050403;           /* Main background (dark night sky) */
+
+  /* Accent colors */
+  --gold: #f2b632;           /* Borders, buttons, highlights */
+  --glow: #ffd45e;           /* Glowing text and elements */
+  --dim: #9c8a68;            /* Subtle text (hints, secondary info) */
+
+  /* Paper colors (for letters and modals) */
+  --paper: #efe0bf;          /* Paper background color */
+  --ink: #4a3418;            /* Text color on paper */
+
+  /* Font families */
+  --serif: "Cormorant Garamond", "Palatino Linotype", Palatino, Georgia, serif;
+  --hand: "Segoe Script", "Bradley Hand", "Brush Script MT", "Snell Roundhand", cursive;
+
+  --ember: #b3262d;          /* Soft red used in the question scene */
+
+  /* Dynamic image (set by JavaScript) */
+  --img: none;
+
+  /* ===== EASY SIZE / POSITION SETTINGS (change these numbers) ===== */
+  --envelope-width: min(300px, 78vw);   /* envelope width */
+  --envelope-height: 200px;             /* envelope height */
+  --seal-size: 54px;                    /* wax seal circle */
+  --sunflower-height: min(66vh, 620px); /* whole flower stage (head + stem) */
+  --flower-center-x: 51.25%;            /* where the flower center is, from the stage's left edge */
+  --stem-width: 3%;                     /* stem thickness (% of stage width) */
+  --flower-brightness: 0.96;            /* flower photo brightness (1 = original) */
+  --flower-saturation: 1.05;
+  --letter-width: 560px;                /* max floating-paper width */
+  --letter-max-height: 70vh;            /* paper scrolls inside when longer */
+  --letter-font-size: 1.25rem;          /* letter text size */
+  --letter-line-height: 1.6;
+  --archive-card-width: 190px;          /* archive photo card width */
+  --archive-gap: 26px;                  /* space between archive cards */
+  --question-title-size: clamp(2rem, 7vw, 3.4rem);
+  --question-size: clamp(1.3rem, 4vw, 2rem);
+  --answer-min-width: 210px;            /* Yes / I need a little time buttons */
+  --music-player-right: 14px;           /* music box distance from right edge */
+  --music-player-bottom: 14px;          /* music box distance from bottom edge */
+  --music-button-size: 34px;            /* play button size */
+  --volume-width: 64px;                 /* volume slider width */
+}
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 2: BASIC RESETS & BODY STYLES
+   ★ Sets up the foundation for the entire page
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+* {
+  box-sizing: border-box;     /* Makes sizing calculations easier */
+  margin: 0;                  /* Removes default margins */
+}
+
+html, body {
+  height: 100%;               /* Full viewport height */
+  background: var(--night);   /* Dark background */
+  color: var(--paper);        /* Light text color */
+  font-family: var(--serif);  /* Main font */
+  overflow: hidden;           /* No scrollbars on main page */
+}
+
+/* Canvas for animated stars and golden dust particles */
+canvas#sky {
+  position: fixed;            /* Stays in place behind everything */
+  inset: 0;                   /* Covers entire screen */
+  z-index: 0;                 /* Behind all other content */
+}
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 3: BUTTONS
+   ★ All button styles - main buttons, back button, close buttons
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+button {
+  font: inherit;              /* Use parent font */
+  color: inherit;             /* Use parent color */
+  cursor: pointer;            /* Show hand cursor */
+  background: none;           /* Transparent background */
+  border: 0;                  /* No border by default */
+}
+
+button:focus-visible {
+  outline: 2px solid var(--glow);      /* Visible focus for accessibility */
+  outline-offset: 3px;
+}
+
+/* Main action buttons (Open Your Gift, Yes, etc.) */
+.btn {
+  border: 1px solid var(--gold);       /* Golden border */
+  padding: 0.7em 1.8em;                /* Comfortable click area */
+  border-radius: 40px;                 /* Fully rounded ends */
+  font-size: 1.1rem;                   /* Slightly larger text */
+  letter-spacing: 0.06em;              /* Spaced out letters */
+  transition: 0.4s;                    /* Smooth hover effect */
+  background: rgba(242, 182, 50, 0.06); /* Subtle golden tint */
+}
+
+.btn:hover {
+  background: rgba(242, 182, 50, 0.22); /* Brighter on hover */
+  box-shadow: 0 0 28px rgba(242, 182, 50, 0.45); /* Golden glow */
+}
+
+/* Back to menu button (top-left corner) */
+.back {
+  position: fixed;            /* Stays in top-left */
+  top: 16px;
+  left: 16px;
+  z-index: 5;                 /* Above most content */
+  color: var(--dim);          /* Subtle color */
+  font-size: 1rem;
+  display: none;              /* Hidden by default */
+}
+
+.back.on {
+  display: block;             /* Shows when needed */
+}
+
+.back:hover {
+  color: var(--glow);         /* Highlights on hover */
+}
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 4: SCREEN CONTAINERS
+   ★ Each "page" of the site (gift, menu, observatory, etc.)
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+.screen {
+  position: fixed;            /* Covers entire viewport */
+  inset: 0;                   /* Top, right, bottom, left = 0 */
+  z-index: 1;                 /* Above background */
+  display: none;              /* Hidden by default */
+  flex-direction: column;     /* Stack children vertically */
+  align-items: center;        /* Center horizontally */
+  justify-content: center;    /* Center vertically */
+  padding: 24px;
+  text-align: center;
+  overflow-y: auto;           /* Scroll if content is too tall */
+}
+
+.screen.on {
+  display: flex;              /* Shows when active */
+  animation: fade 1.1s ease both; /* Fade in animation */
+}
+
+@keyframes fade {
+  from { opacity: 0; }        /* Start invisible */
+  to { opacity: 1; }          /* End fully visible */
+}
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 5: TYPOGRAPHY
+   ★ Headings and text styles
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+h1, h2 {
+  font-weight: 500;           /* Medium weight */
+  letter-spacing: 0.02em;     /* Slight letter spacing */
+}
+
+h1 {
+  font-size: clamp(1.6rem, 5vw, 2.6rem); /* Responsive size (min, preferred, max) */
+  line-height: 1.25;          /* Comfortable line height */
+  max-width: 20ch;            /* Max 20 characters wide for readability */
+}
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 6: ICONS
+   ★ Handles both emoji and image icons
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+.ico {
+  display: inline-block;      /* Inline but can have width/height */
+  width: 1em;                 /* Size matches text size */
+  height: 1em;
+  object-fit: contain;        /* Keeps image proportions */
+  vertical-align: middle;     /* Aligns with text */
+}
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 7: MUSIC PLAYER
+   ★ Top-right corner music controls
+   ★ TO RESIZE: Change width/height values below
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+#player {
+  position: fixed;
+  bottom: var(--music-player-bottom);
+  right: var(--music-player-right);
+  z-index: 12;                /* above letters and the zoom image */                 /* Above most content */
+  display: flex;
+  align-items: center;
+  gap: 6px;                   /* Space between buttons */
+}
+
+#player.hidden {
+  display: none;              /* Hides when no music */
+}
+
+/* Main music button and more options button */
+#music, #more {
+  width: var(--music-button-size);
+  height: var(--music-button-size);
+  border-radius: 50%;         /* Perfect circle */
+  border: 1px solid rgba(242, 182, 50, 0.45);
+  color: var(--gold);
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.65;              /* Slightly transparent */
+  transition: 0.3s;
+  display: grid;
+  place-items: center;        /* Centers content */
+  background: rgba(5, 4, 3, 0.6);
+}
+
+#more {
+  width: 22px;                /* Smaller button */
+  height: 22px;
+  font-size: 11px;
+  border-color: rgba(242, 182, 50, 0.25);
+}
+
+#music:hover, #more:hover, #music.playing {
+  opacity: 1;                 /* Fully opaque */
+  box-shadow: 0 0 14px rgba(242, 182, 50, 0.6); /* Golden glow */
+}
+
+/* Animated equalizer bars */
+.eq {
+  display: none;
+  gap: 2px;
+  align-items: flex-end;
+  height: 12px;
+}
+
+.eq i {
+  width: 2px;
+  background: var(--gold);
+  animation: eq 1s ease-in-out infinite; /* Bouncing animation */
+}
+
+.eq i:nth-child(2) { animation-delay: 0.25s; } /* Staggered timing */
+.eq i:nth-child(3) { animation-delay: 0.5s; }
+
+@keyframes eq {
+  0%, 100% { height: 3px; }
+  50% { height: 12px; }
+}
+
+#music.playing .eq { display: flex; } /* Shows when playing */
+#music.playing #mIcon { display: none; } /* Hides music note */
+
+/* Popup panel with track info and controls */
+.pop {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border: 1px solid rgba(242, 182, 50, 0.3);
+  border-radius: 20px;
+  background: rgba(5, 4, 3, 0.85);
+  font-size: 0.9rem;
+  color: var(--dim);
+}
+
+.pop.on { display: flex; }         /* Shows when opened */
+.pop button { opacity: 0.8; }
+.pop button:hover { color: var(--glow); }
+
+#trackName {
+  max-width: 14ch;            /* Max 14 characters */
+  white-space: nowrap;        /* Single line */
+  overflow: hidden;           /* Hide overflow */
+  text-overflow: ellipsis;    /* Show ... for long names */
+}
+
+#vol {
+  width: var(--volume-width);
+  accent-color: var(--gold);  /* Golden slider color */
+}
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 8: SCREEN 1 - GIFT ENVELOPE
+   ★ The opening screen with animated envelope
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+.env {
+  position: relative;
+  width: var(--envelope-width);
+  height: var(--envelope-height);
+  margin: 34px 0 30px;
+  background: #e4cf9f;        /* Tan envelope color */
+  border-radius: 4px;
+  box-shadow: 0 20px 60px #000, 0 0 80px rgba(242, 182, 50, 0.12);
+  animation: float 5s ease-in-out infinite; /* Gentle floating */
+}
+
+@keyframes float {
+  50% { transform: translateY(-9px); } /* Moves up slightly */
+}
+
+.env::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, transparent 49.5%, rgba(120, 80, 20, 0.25) 50%) left/50% 100% no-repeat,
+    linear-gradient(225deg, transparent 49.5%, rgba(120, 80, 20, 0.25) 50%) right/50% 100% no-repeat;
+}
+
+/* Envelope flap */
+.flap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 60%;
+  background: #d6bd86;        /* Slightly darker tan */
+  clip-path: polygon(0 0, 100% 0, 50% 100%); /* Triangle shape */
+  transform-origin: top;
+  transition: transform 1.1s cubic-bezier(0.6, 0, 0.2, 1);
+  z-index: 3;
+}
+
+/* Wax seal in center */
+.seal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  font-size: 30px;            /* ← CHANGE TO RESIZE SEAL ICON */
+  width: var(--seal-size);
+  height: var(--seal-size);
+  cursor: pointer;
+  animation: sealPulse 2.6s ease-in-out infinite;   /* hints that it can be clicked */
+  border-radius: 50%;
+  background: #b8860b;        /* Dark gold */
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 22px rgba(255, 200, 60, 0.6);
+  transition: 0.6s;
+}
+
+@keyframes sealPulse { 50% { box-shadow: 0 0 36px rgba(255, 215, 90, 0.95); } }
+.seal:hover:not(:disabled) { transform: translate(-50%, -50%) scale(1.12); }
+.seal:disabled { cursor: default; animation: none; }
+.env.open .seal { animation: none; }
+.sealHint { color: var(--dim); font-size: 0.95rem; margin-top: -8px; }
+.glimpse img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Full-screen picture that grows out of the envelope (placed by script.js) */
+#zoom { position: fixed; z-index: 7; display: none; overflow: hidden; background: radial-gradient(circle at 50% 70%, #2a1c06, #000); }
+#zoom.on { display: block; }
+#zoom img { width: 100%; height: 100%; object-fit: cover; display: block; }
+#zoom.noImage img { display: none; }
+
+.env.open .flap {
+  transform: rotateX(180deg); /* Flips open */
+  z-index: 0;
+}
+
+.env.open .seal {
+  opacity: 0;                 /* Fades out */
+  transform: translate(-50%, -50%) scale(2); /* Grows while fading */
+}
+
+.env.open { animation: none; } /* Stops floating when opened */
+
+/* Glimpse of sky rising from envelope */
+.glimpse {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  width: 80%;
+  height: 0;                  /* Starts collapsed */
+  transform: translateX(-50%);
+  background: radial-gradient(circle at 50% 70%, #2a1c06, #000);
+  border-radius: 3px;
+  transition: height 1.2s 0.5s; /* Expands after delay */
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-size: 42px;            /* ← CHANGE TO RESIZE GLIMPSE ICON */
+  z-index: 1;
+}
+
+.env.open .glimpse {
+  height: 210px;              /* Expands to full height */
+}
+
+/* Music checkbox option */
+.opt {
+  margin-top: 18px;
+  color: var(--dim);
+  font-size: 0.95rem;
+}
+
+.opt input {
+  accent-color: var(--gold);  /* Golden checkbox */
+}
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 9: SCREEN 2 - MENU CARDS
+   ★ Four floating cards for navigation
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 200px)); /* 2 columns on mobile */
+  gap: 18px;                  /* ← CHANGE TO ADJUST SPACE BETWEEN CARDS */
+  margin-top: 30px;
+}
+
+@media (min-width: 760px) {
+  .cards {
+    grid-template-columns: repeat(4, 200px); /* 4 columns on desktop */
+  }
+}
+
+.card {
+  padding: 26px 14px;         /* ← CHANGE TO ADJUST CARD PADDING */
+  border: 1px solid rgba(242, 182, 50, 0.3);
+  border-radius: 100px 100px 10px 10px; /* Rounded top, square bottom */
+  background: linear-gradient(#150f05, #0a0703);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  min-height: 210px;          /* ← CHANGE TO ADJUST CARD HEIGHT */
+  position: relative;
+  overflow: hidden;
+  animation: cardFloat 4s ease-in-out infinite; /* Gentle bounce */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Staggered animation timing for each card */
+.card:nth-child(1) { animation-delay: 0s; }
+.card:nth-child(2) { animation-delay: 0.3s; }
+.card:nth-child(3) { animation-delay: 0.6s; }
+.card:nth-child(4) { animation-delay: 0.9s; }
+
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); } /* Floats up */
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 100px 100px 10px 10px;
+  padding: 3px;
+  background: linear-gradient(45deg, transparent, transparent, transparent, transparent);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.card:hover {
+  transform: translateY(-12px); /* Lifts higher on hover */
+  box-shadow: 0 12px 40px rgba(242, 182, 50, 0.35), 0 0 50px rgba(242, 182, 50, 0.2);
+  animation-play-state: paused; /* Pauses float animation */
+}
+
+.card:hover::before {
+  opacity: 1;
+  background: linear-gradient(
+    90deg,
+    var(--gold) 0%,
+    transparent 20%,
+    transparent 40%,
+    var(--gold) 50%,
+    transparent 60%,
+    transparent 80%,
+    var(--gold) 100%
+  );
+  animation: goldRush 1.2s linear infinite; /* Moving gold shimmer */
+}
+
+@keyframes goldRush {
+  0% { background-position: 0% 0; }
+  100% { background-position: 200% 0; } /* Slides across */
+}
+
+.card.done::after { content: "✓"; position: absolute; top: 14px; right: 18px; color: var(--glow); }
+.card.locked { opacity: 0.5; filter: grayscale(0.6); cursor: not-allowed; }
+.card.locked::after { content: "🔒"; position: absolute; top: 14px; right: 16px; font-size: 1rem; }
+.card.locked:hover { transform: none; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); }
+.card.justUnlocked { animation: unlock 2.2s ease; }
+@keyframes unlock { 0% { filter: brightness(2.2); box-shadow: 0 0 80px 20px rgba(179, 38, 45, 0.7); } 100% { filter: none; } }
+.card.shake { animation: shake 0.45s; }
+@keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.card i {
+  display: block;
+  font-style: normal;
+  font-size: 48px;            /* ← CHANGE TO RESIZE MENU CARD ICONS */
+  margin-bottom: 12px;
+  height: 52px;
+}
+
+.card b {
+  display: block;
+  font-weight: 500;
+  font-size: 1.2rem;          /* ← CHANGE TO RESIZE CARD TITLES */
+  margin-bottom: 6px;
+}
+
+.card small {
+  color: var(--dim);
+  font-size: 0.95rem;         /* ← CHANGE TO RESIZE CARD HINTS */
+}
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 10: SCREEN 3 - OBSERVATORY (SUNFLOWER)
+   ★ The main interactive flower with rotating petals
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+#obs {
+  justify-content: flex-start;
+  padding-top: 46px;          /* ← CHANGE TO ADJUST TOP SPACING */
+}
+
+/* Main stage container */
+.stage {
+  position: relative;
+  height: var(--sunflower-height);
+  aspect-ratio: 800/950;      /* Width to height ratio */
+  flex: none;
+}
+
+/* Full flower image with stem and leaves */
+.stage .full {
+  position: absolute;
+  inset: 0;
+  background:
+    var(--img) center/100% 80% no-repeat,  /* Main flower photo */
+    linear-gradient(90deg, transparent calc(var(--flower-center-x) - var(--stem-width) / 2), #35521f 0 calc(var(--flower-center-x) + var(--stem-width) / 2), transparent 0) center 85%/100% 20% no-repeat, /* Stem: centered on the flower center */
+    radial-gradient(ellipse, #66843a 0 42%, transparent 47%) 26% 78%/28% 5% no-repeat, /* Left leaf */
+    radial-gradient(ellipse, #66843a 0 42%, transparent 47%) 70% 88%/30% 6% no-repeat; /* Right leaf */
+  opacity: 0;
+  transition: opacity 2s;     /* Fades in */
+}
+
+.stage.bloom .full {
+  opacity: 1;                 /* Visible when blooming */
+}
+
+/* Golden halo behind flower */
+.halo {
+  position: absolute;
+  left: 50%;
+  top: 35%;                   /* ← CHANGE TO MOVE HALO UP/DOWN */
+  width: 110%;                /* ← CHANGE TO RESIZE HALO */
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) scale(0.2);
+  background: radial-gradient(
+    circle,
+    rgba(255, 196, 50, 0.4),
+    rgba(255, 160, 20, 0.1) 45%,
+    transparent 68%
+  );
+  opacity: 0;
+  transition: 2.4s ease;
+  pointer-events: none;       /* Doesn't block clicks */
+}
+
+.stage.bloom .halo {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  animation: pulse 5s ease-in-out 2.4s infinite; /* Gentle pulsing */
+}
+
+@keyframes pulse {
+  50% { opacity: 0.6; }
+}
+
+/* Rotating flower head */
+.head {
+  position: absolute;
+  left: 11.25%;               /* ← CHANGE TO MOVE FLOWER LEFT/RIGHT */
+  top: 8%;                    /* ← CHANGE TO MOVE FLOWER UP/DOWN */
+  width: 80%;                 /* ← CHANGE TO RESIZE FLOWER HEAD */
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    var(--img) 56.25% 30.55%/125% auto no-repeat,
+    radial-gradient(
+      circle,
+      #50300a 0 12%,
+      #8d5c0b 13% 20%,
+      transparent 21% 36%,
+      transparent 37% 54%,
+      transparent 55% 58%,
+      transparent 59% 100%
+    );
+  transform: rotate(var(--r, 0deg)) scale(0.15);
+  opacity: 0;
+  filter: saturate(var(--flower-saturation)) brightness(var(--flower-brightness)) drop-shadow(0 0 12px rgba(255, 190, 40, 0.3));
+  transition: transform 2.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1.6s;
+  cursor: grab;               /* Shows grab cursor */
+  touch-action: none;         /* Prevents scrolling while dragging */
+}
+
+.stage.bloom .head {
+  transform: rotate(var(--r, 0deg)) scale(1);
+  opacity: 1;
+}
+
+.stage.bloom .head.drag,
+.stage.bloom .head.spin {
+  transition: none;           /* Instant rotation while dragging */
+}
+
+.stage.bloom .head.drag {
+  cursor: grabbing;           /* Shows grabbing cursor while dragging */
+}
+
+/* Individual glowing petals */
+.hot {
+  position: absolute;
+  width: 60px;                /* ← CHANGE TO RESIZE PETALS */
+  height: 80px;
+  margin: -40px 0 0 -30px;    /* Centers the petal */
+  cursor: pointer;
+  background-image: radial-gradient(
+    ellipse at 35% 25%,
+    #fff6bd 0 8%,
+    #ffdf57 30%,
+    #f3b51f 65%,
+    #a96508 100%
+  );
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  padding: 0;
+  border-radius: 50% 50% 45% 45%; /* Petal shape */
+  opacity: 0;                 /* petals fade in one by one when the flower blooms */
+  transition: transform 0.4s ease, filter 0.4s ease, opacity 1s ease var(--bloom-delay, 0s);
+  transform: rotate(calc(var(--r, 0deg) * -1 + var(--petal-angle, 0deg)));
+  transform-origin: center;
+  animation: petalPulse 3.5s ease-in-out infinite;
+  /* ↓ CHANGE THESE VALUES TO ADJUST PETAL BRIGHTNESS & GLOW */
+  filter: brightness(0.9) saturate(1.1)
+          drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))
+          drop-shadow(0 0 18px rgba(255, 215, 0, 0.3));
+}
+
+@keyframes petalPulse {
+  0%, 100% {
+    filter: brightness(0.9) saturate(1.1)
+            drop-shadow(0 0 8px rgba(255, 215, 0, 0.5))
+            drop-shadow(0 0 18px rgba(255, 215, 0, 0.3));
+    transform: rotate(calc(var(--r, 0deg) * -1 + var(--petal-angle, 0deg))) scale(1);
+  }
+  50% {
+    filter: brightness(1) saturate(1.15)
+            drop-shadow(0 0 12px rgba(255, 215, 0, 0.6))
+            drop-shadow(0 0 22px rgba(255, 215, 0, 0.4));
+    transform: rotate(calc(var(--r, 0deg) * -1 + var(--petal-angle, 0deg))) scale(1.05);
+  }
+}
+
+.stage.bloom .hot { opacity: 1; }
+.hot:hover {
+  transform: rotate(calc(var(--r, 0deg) * -1 + var(--petal-angle, 0deg))) scale(1.15);
+  filter: brightness(1.1) saturate(1.2)
+          drop-shadow(0 0 15px rgba(255, 215, 0, 0.7))
+          drop-shadow(0 0 28px rgba(255, 215, 0, 0.5));
+  animation-play-state: paused;
+}
+
+.hot.seen {
+  animation: none;
+  filter: brightness(1.12) saturate(1.15)
+          drop-shadow(0 0 18px rgba(255, 255, 200, 0.8))
+          drop-shadow(0 0 32px rgba(255, 215, 0, 0.6));
+}
+
+/* Dark center of flower (opens final letter) */
+.core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 21%;                 /* ← CHANGE TO RESIZE CENTER BUTTON */
+  aspect-ratio: 1;
+  margin: -10.5% 0 0 -10.5%;
+  border-radius: 50%;
+  transform: rotate(calc(var(--r, 0deg) * -1));
+  background: radial-gradient(circle, rgba(255, 190, 70, 0.1), transparent 70%);  /* soft amber, matches petals */
+}
+
+.core.ready {
+  animation: core 2.2s ease-in-out infinite; /* Pulses when all petals clicked */
+}
+
+@keyframes core {
+  50% { box-shadow: 0 0 30px 8px rgba(255, 190, 70, 0.4); }
+}
+
+/* Hint line under the flower (letters now float above, nothing is appended here) */
+.msg { min-height: 2.4em; max-width: 600px; margin: 14px auto 0; text-align: center; }
+
+.msg .hand {
+  font-family: var(--hand);   /* Handwritten font */
+  font-size: 1.1rem;          /* ← CHANGE TO RESIZE HANDWRITTEN LABEL */
+  color: var(--glow);         /* Golden color */
+  display: block;             /* Own line */
+  margin-bottom: 8px;         /* Space below */
+  font-weight: 500;           /* Medium weight */
+}
+
+.head.whisperGlow { filter: saturate(1.1) brightness(1.05) drop-shadow(0 0 26px rgba(255, 215, 120, 0.7)); }
+
+/* Rotation control buttons */
+.tools {
+  position: fixed;
+  bottom: 16px;               /* ← CHANGE TO MOVE CONTROLS UP/DOWN */
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  color: var(--dim);
+  font-size: 0.95rem;         /* ← CHANGE TO RESIZE CONTROL TEXT */
+  z-index: 3;
+}
+
+.tools button {
+  padding: 0.2em 0.8em;       /* ← CHANGE TO RESIZE CONTROL BUTTONS */
+  border: 1px solid rgba(242, 182, 50, 0.3);
+  border-radius: 20px;
+  font-size: 1.2rem;          /* ← CHANGE TO RESIZE BUTTON SYMBOLS */
+}
+
+.tools button:hover {
+  border-color: var(--gold);
+  color: var(--glow);
+  background: rgba(242, 182, 50, 0.1);
+}
+
+/* Clickable stars in sky */
+.star {
+  position: fixed;
+  z-index: 2;
+  width: 22px;                /* ← CHANGE TO RESIZE STARS */
+  height: 22px;
+  margin: -11px;
+  background: radial-gradient(circle, #fff, #ffe49a 35%, transparent 70%);
+  border-radius: 50%;
+  animation: starTwinkle 3s infinite;
+  box-shadow: 0 0 14px rgba(255, 220, 120, 0.8);
+}
+
+@keyframes starTwinkle {
+  50% { opacity: 0.45; }
+}
+
+/* Discovery objects (telescope, notebook, etc.) */
+.disc {
+  position: fixed;
+  z-index: 3;
+  filter: drop-shadow(0 0 8px rgba(255, 200, 60, 0.6));
+  transition: 0.3s;
+}
+
+.disc:hover {
+  filter: drop-shadow(0 0 16px rgba(255, 220, 100, 0.95));
+  transform: scale(1.1);
+}
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 12: SCREEN 4 - LETTER ENVELOPES
+   ★ Sealed letter envelopes on shelf
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+.shelf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;                  /* ← CHANGE TO ADJUST SPACE BETWEEN ENVELOPES */
+  justify-content: center;
+  max-width: 760px;
+  margin-top: 26px;
+}
+
+.mail {
+  width: 150px;               /* ← CHANGE TO RESIZE ENVELOPE WIDTH */
+  height: 104px;              /* ← CHANGE TO RESIZE ENVELOPE HEIGHT */
+  background: #e4cf9f;
+  color: var(--ink);
+  border-radius: 3px;
+  position: relative;
+  box-shadow: 0 10px 30px #000;
+  transition: 0.4s;
+  padding-top: 58px;
+  font-size: 1rem;            /* ← CHANGE TO RESIZE ENVELOPE LABEL TEXT */
+}
+
+.mail:nth-child(odd) {
+  transform: rotate(-2.5deg); /* Tilts left */
+}
+
+.mail:nth-child(even) {
+  transform: rotate(2deg);    /* Tilts right */
+}
+
+.mail:hover {
+  transform: translateY(-8px) rotate(0); /* Lifts and straightens */
+  box-shadow: 0 0 34px rgba(242, 182, 50, 0.4);
+}
+
+.mail::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 55%;
+  background: #d6bd86;
+  clip-path: polygon(0 0, 100% 0, 50% 100%); /* Triangle flap */
+}
+
+.stamp {
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  transform: translateX(-50%);
+  font-size: 22px;            /* ← CHANGE TO RESIZE STAMP ICON */
+}
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 13: SCREEN 5 - POEM PAGE
+   ★ Journal-style poem display
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+.page {
+  background: var(--paper);
+  color: var(--ink);
+  padding: 40px 34px;         /* ← CHANGE TO ADJUST PAGE PADDING */
+  max-width: 480px;           /* ← CHANGE TO RESIZE PAGE WIDTH */
+  width: 100%;
+  border-radius: 3px 12px 12px 3px;
+  box-shadow: -10px 0 0 #7a5420 inset, 0 0 80px rgba(242, 182, 50, 0.2);
+  font-family: var(--hand);
+  font-size: 1.15rem;         /* ← CHANGE TO RESIZE POEM TEXT */
+  line-height: 2;             /* ← CHANGE TO ADJUST LINE SPACING */
+  text-align: center;
+  background-image: repeating-linear-gradient(
+    transparent 0 35px,
+    rgba(120, 80, 20, 0.14) 35px 36px
+  ); /* Notebook lines */
+}
+
+.page h2 {
+  font-size: 1.5rem;          /* ← CHANGE TO RESIZE POEM TITLE */
+  margin-bottom: 12px;
+}
+
+.page p {
+  opacity: 0;
+  animation: fade 1.4s forwards; /* Fades in line by line */
+}
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 14: SCREEN 6 - THE QUESTION
+   ★ Final question with two choice buttons
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+/* (question styles are in the NEW SECTIONS block at the end of this file) */
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ SECTION 15: ACCESSIBILITY
+   ★ Reduces motion for users who prefer it
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01s !important;
+    transition-duration: 0.01s !important;
+  }
+}
+
+
+/* =====================================================================
+   END OF STYLESHEET
+
+   Need help? Look for the ★ markers to find specific sections.
+   Most common edits:
+   - Colors: Section 1
+   - Button sizes: Section 3
+   - Music player: Section 7
+   - Flower size & petals: Section 10
+   - Text sizes: Look for "← CHANGE TO RESIZE" comments
+   ===================================================================== */
+
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ NEW SECTIONS: floating letters · archive · question
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+/* ----- Floating paper letters (petals, stars, whispers, unsent letters) ----- */
+#paperLayer { position: fixed; inset: 0; z-index: 9; display: none; place-items: center; padding: 18px 18px 70px; background: rgba(0, 0, 0, 0.55); }
+#paperLayer.on { display: grid; }
+.paper {
+  position: relative; width: min(var(--letter-width), 100%); max-height: var(--letter-max-height); overflow: auto;
+  padding: 32px 30px 20px; border-radius: 3px; text-align: left;
+  color: var(--ink); font-size: var(--letter-font-size); line-height: var(--letter-line-height);
+  background:
+    repeating-linear-gradient(transparent 0 33px, rgba(120, 80, 20, 0.12) 33px 34px),
+    radial-gradient(ellipse at 30% 20%, #f6ead0, var(--paper) 70%, #dcc89d);   /* warm parchment */
+  box-shadow: 0 0 60px rgba(242, 182, 50, 0.25), 0 18px 40px rgba(0, 0, 0, 0.6);
+}
+.paper h2 { font-family: var(--hand); font-size: 1.4rem; margin-bottom: 8px; }
+.paper .body { white-space: pre-wrap; overflow-wrap: anywhere; min-height: 4em; cursor: pointer; }
+.paper .ghost { visibility: hidden; }          /* reserves space for the not-yet-typed text */
+.paper .x { display: block; margin: 16px 0 0 auto; padding: 6px 10px; color: #7a5a20; font-size: 1rem; position: sticky; bottom: 0; }
+.paper .x:hover { color: #3a2208; }
+/* Starts at the clicked element (--from-x/--from-y set by script.js), small and tilted, then unfolds */
+.paper.enter { animation: paperIn 0.6s cubic-bezier(.2,.8,.2,1) both; }
+.paper.leave { animation: paperOut 0.45s ease-in both; }
+@keyframes paperIn { from { transform: translate(var(--from-x), var(--from-y)) scale(0.08) rotate(-14deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes paperOut { to { transform: translate(var(--from-x), var(--from-y)) scale(0.08) rotate(10deg); opacity: 0; } }
+
+/* ----- Our Archive ----- */
+.gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--archive-gap); max-width: 900px; margin: 26px 0; }
+.snap {
+  width: var(--archive-card-width); padding: 10px 10px 14px; background: #efe0bf; color: var(--ink); border-radius: 2px;
+  box-shadow: 0 10px 30px #000; transition: transform 0.4s, box-shadow 0.4s; animation: fade 1.2s both;
+}
+.snap:nth-child(odd) { transform: rotate(-2.5deg); } .snap:nth-child(even) { transform: rotate(2deg); }
+.snap:hover { transform: translateY(-8px) rotate(0); box-shadow: 0 0 34px rgba(242, 182, 50, 0.4); }
+.snap .pic { position: relative; display: block; aspect-ratio: 1; background: #1a1308; overflow: hidden; filter: sepia(0.25); }
+.snap .pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ph { position: absolute; inset: 0; display: grid; place-items: center; color: var(--dim); font-size: 0.95rem; border: 1px dashed rgba(242, 182, 50, 0.4); }
+.snap b { display: block; margin-top: 8px; font-family: var(--hand); font-weight: 500; font-size: 0.95rem; }
+.snap small { color: #7a5a20; }
+.btn.small { font-size: 0.95rem; margin-bottom: 20px; }
+#lightbox { position: fixed; inset: 0; z-index: 10; display: none; place-items: center; background: rgba(0, 0, 0, 0.88); padding: 18px 18px 70px; }
+#lightbox.on { display: grid; animation: fade 0.5s both; }
+#lightbox figure { max-width: min(760px, 100%); text-align: center; }
+#lightbox img, .ph2 { max-width: 100%; max-height: 66vh; border: 8px solid #efe0bf; box-shadow: 0 0 60px rgba(242, 182, 50, 0.25); }
+.ph2 { display: grid; place-items: center; width: min(420px, 90vw); aspect-ratio: 1; background: #1a1308; color: var(--dim); }
+#lightbox figcaption { margin-top: 10px; }
+#lightbox .x { position: fixed; top: 16px; right: 16px; color: var(--paper); padding: 8px 12px; }
+
+/* ----- The Question -----
+   LAYOUT RULE (this is what fixed the scrollbar): #ask never scrolls itself. Effects live in a clipped layer,
+   and only .askStage may scroll, and only when the content really is taller than the screen. */
+#ask { padding: 0; overflow: hidden; background: radial-gradient(ellipse at center, #120506, #050403 70%); transition: background 2s; }
+#ask.on { display: block; }
+@supports (height: 100dvh) { #ask { bottom: auto; height: 100dvh; } }   /* follows the phone's moving address bar */
+#ask canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+#ask .aura { position: absolute; inset: 0; overflow: hidden; pointer-events: none; opacity: 0; animation: auraIn 3s 0.6s ease forwards;
+  background: radial-gradient(circle at 50% 45%, rgba(179, 38, 45, 0.28), rgba(242, 182, 50, 0.12) 40%, transparent 70%); transition: opacity 2s; }
+#ask.night .aura { animation: none; opacity: 0; }
+@keyframes auraIn { to { opacity: 1; } }
+
+.askStage {
+  position: relative; z-index: 1; height: 100%; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+  display: flex; flex-direction: column;
+  padding: max(56px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(76px, calc(env(safe-area-inset-bottom) + 64px)) max(20px, env(safe-area-inset-left));
+}
+.scene { margin: auto; width: 100%; max-width: 720px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.scene[hidden] { display: none; }
+.scene:not([hidden]) { animation: sceneIn 1.1s ease; }
+@keyframes sceneIn { from { opacity: 0; transform: translateY(10px); } }
+.scene.out { opacity: 0; transition: opacity 0.9s; pointer-events: none; }
+
+/* words appear one by one (the space for every word is reserved from the start, so nothing shifts) */
+.w { display: inline-block; opacity: 0; filter: blur(4px); transform: translateY(6px); transition: opacity 0.9s, filter 0.9s, transform 0.9s; }
+.w.in { opacity: 1; filter: none; transform: none; }
+.w.glow.in { color: var(--glow); text-shadow: 0 0 18px rgba(255, 200, 90, 0.75); transition: color 1.5s, text-shadow 1.5s, opacity 0.9s, filter 0.9s, transform 0.9s; }
+
+#ask .line { max-width: 30ch; margin: 6px 0; font-size: var(--question-size); line-height: 1.5; letter-spacing: 0.02em; text-shadow: 0 0 22px rgba(255, 200, 90, 0.3); }
+#ask .line.title { font-size: var(--question-title-size); font-style: italic; color: var(--glow); }
+.mainQ { max-width: 22ch; margin: 18px 0 0; font-weight: 500; font-size: clamp(1.7rem, 6.4vw, 2.8rem); line-height: 1.35; letter-spacing: 0.02em; text-shadow: 0 0 26px rgba(255, 200, 90, 0.4); }
+
+#ask .answers { display: flex; gap: 18px; margin-top: 32px; flex-wrap: wrap; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 1.4s, visibility 1.4s; }
+#ask .answers.show { opacity: 1; visibility: visible; }
+#ask .answers .btn { min-width: var(--answer-min-width); min-height: 52px; }
+#ask .btn:disabled { cursor: default; }
+/* YES: the strongest, warmest treatment */
+#ask .yes { color: #fff4d6; border-color: var(--glow); background: linear-gradient(135deg, rgba(179, 38, 45, 0.5), rgba(242, 182, 50, 0.3));
+  box-shadow: 0 0 26px rgba(255, 190, 70, 0.55); animation: breathe 3s ease-in-out infinite; transition: transform 0.4s, box-shadow 0.4s; }
+#ask .yes:hover:not(:disabled), #ask .yes:focus-visible { box-shadow: 0 0 56px rgba(255, 200, 90, 0.9), 0 0 100px rgba(179, 38, 45, 0.5); transform: translateY(-3px) scale(1.04); }
+#ask .yes:active { transform: scale(0.97); }
+@keyframes breathe { 50% { box-shadow: 0 0 44px rgba(255, 200, 90, 0.8); } }
+/* "I need a little time": calm, respectful, easy to read */
+#ask .think { border-color: rgba(242, 182, 50, 0.45); color: var(--paper); transition: transform 0.4s, box-shadow 0.4s; }
+#ask .think:hover:not(:disabled), #ask .think:focus-visible { box-shadow: 0 0 20px rgba(242, 182, 50, 0.35); transform: translateY(-2px); }
+
+.bigMsg { max-width: 24ch; padding: 20px 26px; font-size: clamp(1.5rem, 5.4vw, 2.4rem); line-height: 1.4; color: #fff4d6;
+  text-shadow: 0 2px 18px #000, 0 0 30px rgba(255, 200, 90, 0.45); background: radial-gradient(ellipse at center, rgba(5, 4, 3, 0.7), transparent 75%); }
+.actions { display: flex; gap: 14px; margin-top: 22px; flex-wrap: wrap; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 1.2s, visibility 1.2s; }
+.actions.show { opacity: 1; visibility: visible; }
+.skip { position: fixed; left: max(16px, env(safe-area-inset-left)); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 2; color: var(--dim); padding: 8px 10px; }
+.skip[hidden] { display: none; }
+
+/* pathway 2: moonlit observatory colours (silver-blue instead of gold) */
+#ask.night { background: #040a1c; }
+#ask.night .card { max-width: 520px; padding: 26px 24px; border-radius: 14px; border: 1px solid rgba(190, 205, 255, 0.2); background: radial-gradient(ellipse at center, rgba(4, 10, 28, 0.78), rgba(4, 10, 28, 0.55)); }
+#ask.night .bigMsg { color: #e6ecff; font-size: clamp(1.3rem, 4.6vw, 2rem); background: none; padding: 0 0 8px; text-shadow: 0 0 22px rgba(160, 185, 255, 0.5); }
+#ask.night #timeLetter p { margin: 12px 0 0; font-size: clamp(1.05rem, 3.6vw, 1.3rem); line-height: 1.6; color: #cdd7f5; }
+#ask.night .w.glow.in { color: #fff; text-shadow: 0 0 16px rgba(180, 200, 255, 0.8); }
+#ask.night .btn { border-color: rgba(190, 205, 255, 0.5); color: #e6ecff; background: rgba(120, 150, 255, 0.07); }
+#ask.night .btn:hover { box-shadow: 0 0 24px rgba(150, 175, 255, 0.45); background: rgba(120, 150, 255, 0.16); }
+#ask.night .skip { color: #8a98c4; }
+
+@media (max-width: 560px) {
+  .paper { padding: 26px 20px 14px; }
+  :root { --archive-card-width: 150px; --archive-gap: 18px; }
+}
+
+/* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+   ★ RESPONSIVE DESIGN FOR ALL DEVICES
+   ★ Ensures the interface adapts to tablets, phones, and small screens
+   ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+/* Tablet and medium screens (760px - 1024px) */
+@media (max-width: 1024px) {
+  :root {
+    --envelope-width: min(280px, 80vw);
+    --envelope-height: 180px;
+    --sunflower-height: min(58vh, 520px);
+    --letter-width: 500px;
+    --archive-card-width: 170px;
+    --question-title-size: clamp(1.8rem, 6vw, 3rem);
+    --question-size: clamp(1.2rem, 3.5vw, 1.8rem);
+  }
+
+  h1 {
+    font-size: clamp(1.4rem, 4.5vw, 2.2rem);
+  }
+
+  .back {
+    top: 12px;
+    left: 12px;
+    font-size: 0.9rem;
+  }
+
+  #player {
+    bottom: 12px;
+    right: 12px;
+  }
+}
+
+/* Mobile landscape and small tablets (480px - 760px) */
+@media (max-width: 760px) {
+  :root {
+    --envelope-width: min(260px, 82vw);
+    --envelope-height: 170px;
+    --seal-size: 48px;
+    --sunflower-height: min(55vh, 480px);
+    --letter-width: 440px;
+    --letter-font-size: 1.15rem;
+    --archive-card-width: 160px;
+    --archive-gap: 20px;
+    --music-button-size: 32px;
+    --answer-min-width: 180px;
+  }
+
+  .screen {
+    padding: 18px;
+  }
+
+  .cards {
+    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 180px));
+  }
+
+  .card {
+    padding: 22px 12px;
+    min-height: 190px;
+  }
+
+  .card i {
+    font-size: 42px;
+    height: 46px;
+  }
+
+  .card b {
+    font-size: 1.1rem;
+  }
+
+  .card small {
+    font-size: 0.88rem;
+  }
+
+  .tools {
+    bottom: 12px;
+    font-size: 0.88rem;
+  }
+
+  .tools button {
+    font-size: 1.1rem;
+    padding: 0.15em 0.7em;
+  }
+
+  .hot {
+    width: 54px;
+    height: 72px;
+    margin: -36px 0 0 -27px;
+  }
+
+  .shelf {
+    gap: 18px;
+  }
+
+  .mail {
+    width: 135px;
+    height: 94px;
+    font-size: 0.92rem;
+    padding-top: 52px;
+  }
+
+  .page {
+    padding: 32px 26px;
+    font-size: 1.08rem;
+  }
+
+  #ask .answers {
+    gap: 14px;
+  }
+
+  #ask .answers .btn {
+    min-width: 160px;
+    min-height: 48px;
+    font-size: 1rem;
+  }
+}
+
+/* Mobile portrait (320px - 480px) */
+@media (max-width: 480px) {
+  :root {
+    --envelope-width: min(240px, 85vw);
+    --envelope-height: 155px;
+    --seal-size: 44px;
+    --sunflower-height: min(50vh, 420px);
+    --letter-width: 100%;
+    --letter-font-size: 1.05rem;
+    --letter-line-height: 1.5;
+    --archive-card-width: 140px;
+    --archive-gap: 16px;
+    --music-button-size: 30px;
+    --volume-width: 54px;
+    --answer-min-width: 150px;
+  }
+
+  body {
+    font-size: 15px;
+  }
+
+  h1 {
+    font-size: clamp(1.3rem, 4vw, 1.9rem);
+    max-width: 24ch;
+  }
+
+  .screen {
+    padding: 14px;
+  }
+
+  .back {
+    top: 10px;
+    left: 10px;
+    font-size: 0.85rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+    padding: 0.6em 1.5em;
+  }
+
+  .env {
+    margin: 28px 0 24px;
+  }
+
+  .sealHint {
+    font-size: 0.88rem;
+  }
+
+  .cards {
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 160px));
+  }
+
+  .card {
+    padding: 20px 10px;
+    min-height: 175px;
+  }
+
+  .card i {
+    font-size: 38px;
+    height: 42px;
+    margin-bottom: 10px;
+  }
+
+  .card b {
+    font-size: 1.05rem;
+    margin-bottom: 5px;
+  }
+
+  .card small {
+    font-size: 0.82rem;
+  }
+
+  #obs {
+    padding-top: 36px;
+  }
+
+  .stage {
+    max-width: 90vw;
+  }
+
+  .hot {
+    width: 50px;
+    height: 66px;
+    margin: -33px 0 0 -25px;
+  }
+
+  .core {
+    width: 24%;
+    margin: -12% 0 0 -12%;
+  }
+
+  .msg {
+    font-size: 0.95rem;
+  }
+
+  .msg .hand {
+    font-size: 1rem;
+  }
+
+  .tools {
+    bottom: 10px;
+    font-size: 0.82rem;
+    gap: 8px;
+  }
+
+  .tools button {
+    font-size: 1rem;
+    padding: 0.1em 0.6em;
+  }
+
+  .star {
+    width: 20px;
+    height: 20px;
+    margin: -10px;
+  }
+
+  .disc {
+    font-size: 32px !important;
+  }
+
+  #player {
+    bottom: 10px;
+    right: 10px;
+    gap: 5px;
+  }
+
+  #music, #more {
+    font-size: 13px;
+  }
+
+  .pop {
+    padding: 3px 10px;
+    font-size: 0.85rem;
+    gap: 6px;
+  }
+
+  #trackName {
+    max-width: 12ch;
+  }
+
+  .shelf {
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .mail {
+    width: 125px;
+    height: 88px;
+    font-size: 0.85rem;
+    padding-top: 48px;
+  }
+
+  .stamp {
+    font-size: 20px;
+  }
+
+  .page {
+    padding: 28px 20px;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .page h2 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+
+  .gallery {
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .snap {
+    width: 130px;
+    padding: 8px 8px 12px;
+  }
+
+  .snap b {
+    font-size: 0.88rem;
+    margin-top: 6px;
+  }
+
+  .snap small {
+    font-size: 0.78rem;
+  }
+
+  .btn.small {
+    font-size: 0.88rem;
+    margin-bottom: 16px;
+  }
+
+  #lightbox {
+    padding: 14px 14px 60px;
+  }
+
+  #lightbox img, .ph2 {
+    max-height: 60vh;
+    border-width: 6px;
+  }
+
+  #lightbox figcaption {
+    font-size: 0.9rem;
+  }
+
+  #lightbox .x {
+    top: 12px;
+    right: 12px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+
+  #ask .line {
+    max-width: 28ch;
+    margin: 6px 0;
+  }
+
+  #ask .answers {
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  #ask .answers .btn {
+    min-width: 140px;
+    min-height: 46px;
+    font-size: 0.95rem;
+    padding: 0.6em 1.4em;
+  }
+
+  #paperLayer {
+    padding: 14px 14px 60px;
+  }
+
+  .paper {
+    padding: 24px 18px 16px;
+    max-height: 75vh;
+  }
+
+  .paper h2 {
+    font-size: 1.25rem;
+    margin-bottom: 6px;
+  }
+
+  .paper .body {
+    font-size: 1.05rem;
+  }
+
+  .paper .x {
+    margin-top: 12px;
+    padding: 5px 8px;
+    font-size: 0.92rem;
+  }
+}
+
+/* Extra small devices (< 320px) */
+@media (max-width: 320px) {
+  :root {
+    --envelope-width: 90vw;
+    --envelope-height: 140px;
+    --seal-size: 40px;
+    --sunflower-height: min(48vh, 380px);
+    --archive-card-width: 120px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    max-width: 180px;
+  }
+
+  .card {
+    min-height: 160px;
+  }
+
+  .tools {
+    flex-wrap: wrap;
+    bottom: 8px;
+  }
+
+  #ask .answers {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #ask .answers .btn {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --sunflower-height: 70vh;
+    --letter-max-height: 80vh;
+  }
+
+  #obs {
+    padding-top: 24px;
+  }
+
+  .tools {
+    bottom: 8px;
+  }
+
+  .paper {
+    max-height: 82vh;
+  }
+
+  #lightbox {
+    padding: 12px;
+  }
+
+  #lightbox img, .ph2 {
+    max-height: 75vh;
+  }
+}
+
+/* Short screens (phones turned sideways): tighter question layout so less scrolling is needed */
+@media (max-height: 500px) {
+  .askStage { padding-top: 40px; padding-bottom: 60px; }
+  #ask .line.title { font-size: 1.5rem; }
+  .mainQ { font-size: 1.4rem; margin-top: 8px; }
+  #ask .answers { margin-top: 16px; }
+  .bigMsg { font-size: 1.3rem; padding: 8px 16px; }
+}

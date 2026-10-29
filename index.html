@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project: Kairos</title>
+<!-- Keep In.html, St.css, Sc.js and the assets/ folder together. -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"><!-- fallback fonts are set in St.css if this fails -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Night sky canvas: stars + golden dust (drawn by Sc.js) -->
+<canvas id="sky"></canvas>
+
+<!-- SVG gradients for glowing golden petals -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- Default golden petal gradient -->
+    <linearGradient id="petalGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffed4e;stop-opacity:1" />
+      <stop offset="40%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d4a017;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Hover state - brighter golden -->
+    <linearGradient id="petalGradientHover" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fffacd;stop-opacity:1" />
+      <stop offset="40%" style="stop-color:#ffe44e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f4c430;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Seen/clicked state - luminous white-gold -->
+    <linearGradient id="petalGradientSeen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffef;stop-opacity:1" />
+      <stop offset="40%" style="stop-color:#ffed4e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffd700;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Inner highlight gradient -->
+    <radialGradient id="petalHighlight" cx="50%" cy="30%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.6" />
+      <stop offset="70%" style="stop-color:#ffed4e;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:transparent;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+</svg>
+
+<!-- Back button: appears on every page except the gift and the menu -->
+<button class="back" id="back">← Menu</button>
+
+<!-- ===== MUSIC PLAYER (top-right). Songs are set in Sc.js → CONFIG.music.
+     ♪ button = play/pause · ▾ button = opens song title, previous/next and volume. ===== -->
+<div id="player" class="hidden">
+  <span id="playHint" hidden>tap ♪ to play</span>
+  <div class="pop" id="pop">
+    <span id="trackName"></span>
+    <button id="prev" aria-label="Previous song">⏮</button>
+    <button id="next" aria-label="Next song">⏭</button>
+    <input type="range" id="vol" min="0" max="1" step="0.05" value="0.6" aria-label="Volume">
+  </div>
+  <button id="more" aria-label="Music options">▾</button>
+  <button id="music" aria-label="Play or pause music"><span id="mIcon">♪</span><span class="eq"><i></i><i></i><i></i></span></button>
+  <audio id="audio"></audio>
+</div>
+
+<!-- ===== SCREEN 1: THE GIFT (envelope). Title text → CONFIG.giftTitle. Icons filled by Sc.js ===== -->
+<section class="screen on" id="gift">
+  <h1 id="giftTitle"></h1>
+  <div class="env" id="env">
+    <div class="glimpse" id="glimpseIcon"></div>   <!-- glimpse.png is placed in here by script.js -->
+    <div class="flap"></div>
+    <!-- THE SEAL: the only clickable part of the envelope -->
+    <button class="seal" id="seal" aria-label="Break the seal to open your gift"><span id="sealIcon"></span></button>
+  </div>
+  <p class="sealHint">touch the seal</p>
+</section>
+
+<!-- ===== SCREEN 2: MAIN MENU. The four cards are built by script.js from CONFIG.menu ===== -->
+<section class="screen" id="menu">
+  <h1 id="menuTitle"></h1>
+  <div class="cards" id="cards"></div>
+</section>
+
+<!-- ===== SCREEN 3: THE OBSERVATORY. The glowing sunflower (your photo), petals, stars, discoveries ===== -->
+<section class="screen" id="obs">
+  <div class="stage" id="stage">
+    <div class="halo"></div>            <!-- golden glow behind the flower -->
+    <div class="full"></div>            <!-- full photo: stem + leaves -->
+    <div class="head" id="head">        <!-- the spinning flower head; petal dots are added inside it -->
+      <button class="core" id="core" aria-label="Open the center letter"></button>  <!-- center = final letter -->
+    </div>
+  </div>
+  <div class="msg" id="msg"></div>             <!-- shows the petal's reason -->
+  <div class="tools"><button id="rotL" aria-label="Rotate left">⟲</button><span id="count"></span><button id="rotR" aria-label="Rotate right">⟳</button></div>
+</section>
+
+<!-- ===== SCREEN 4: UNSENT LETTERS (envelopes built from CONFIG.letters) ===== -->
+<section class="screen" id="letters"><h1 id="lettersTitle"></h1><div class="shelf" id="shelf"></div></section>
+
+<!-- ===== SCREEN: OUR ARCHIVE (cards built from CONFIG.archive) ===== -->
+<section class="screen" id="archive"><h1 id="archiveTitle"></h1><div class="gallery" id="gallery"></div>
+  <button class="btn small" id="poemLink"></button></section>
+
+<!-- ===== SCREEN 5: THE POEM (still reachable from the archive) (journal page built from CONFIG.poem) ===== -->
+<section class="screen" id="poem"><div class="page" id="poemPage"></div></section>
+
+<!-- ===== SCREEN 6: THE QUESTION (built from CONFIG.question) ===== -->
+<section class="screen" id="ask"></section>
+
+<!-- Floating paper layer: every letter, star note and whisper opens here (one at a time) -->
+<div id="paperLayer"></div>
+
+<!-- Photo viewer for the archive -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer"></div>
+
+<!-- Full-screen glimpse image used for the envelope -> menu transition -->
+<div id="zoom"><img id="zoomImg" alt=""></div>
+
+<script src="script.js"></script>
+</body>
+</html>
